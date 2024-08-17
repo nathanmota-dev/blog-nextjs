@@ -1,7 +1,13 @@
+import HeroSection from "./pages/hero-section";
+import Navbar from "./components/navbar";
+import LatestPosts from "./pages/latest-posts";
+
 export default function Home() {
   return (
-    <main className="h-screen w-full justify-center text-center">
-      teste
-    </main>
-  )
+    <div className="relative bg-[url('/blue.jpg')] bg-cover bg-center min-h-screen">
+      <Navbar />
+      <HeroSection />
+      <LatestPosts />
+    </div>
+  );
 }

@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen font-sans bg-slate-900 antialiased",
+          "min-h-screen font-sans bg-slate-950 antialiased text-white",
           inter.className
         )}>
         {children}
