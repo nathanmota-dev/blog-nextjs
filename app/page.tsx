@@ -4,7 +4,7 @@ import LatestPosts from "./pages/latest-posts";
 
 export default function Home() {
   return (
-    <div className="relative bg-[url('/blue.jpg')] bg-cover bg-center min-h-screen">
+    <div className="relative bg-[url('/white.jpg')] dark:bg-[url('/blue.jpg')] bg-cover bg-center min-h-screen">
       <Navbar />
       <HeroSection />
       <LatestPosts />
