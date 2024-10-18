@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css'
 import cn from 'classnames';
+import Footer from './components/footer';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen font-sans bg-white dark:bg-slate-950 antialiased text-white",
+          "min-h-screen flex flex-col bg-white dark:bg-slate-950 antialiased text-white",
           inter.className
         )}>
         <ThemeProvider
@@ -29,7 +30,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="flex-grow">
+            {children}
+          </div>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
