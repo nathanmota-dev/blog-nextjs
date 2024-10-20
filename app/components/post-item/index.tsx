@@ -6,17 +6,25 @@ import { FaArrowRight } from "react-icons/fa6";
 interface PostItemProps {
     slug: string;
     title: string;
+    topics?: string[];
     description?: string;
     date: string;
 }
 
-export default function PostItem({ slug, title, description, date }: PostItemProps) {
+export default function PostItem({ slug, title, topics, description, date }: PostItemProps) {
     return (
         <nav className="flex flex-col border-border border-b py-3 gap-2 dark:border-slate-700 border-gray-400">
             <div>
                 <h2 className="text-2xl font-bold">
                     <Link href={slug}>{title}</Link >
                 </h2>
+            </div>
+            <div className="flex space-x-2">
+                {topics?.map((topic) => (
+                    <span key={topic} className="inline-block px-2 py-0.5 text-xs font-semibold text-black dark:text-white bg-slate-200 dark:bg-slate-800 rounded-md">
+                        {topic}
+                    </span>
+                ))}
             </div>
             <div className="max-w-none text-muted-foreground">
                 {description}

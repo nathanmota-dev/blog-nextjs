@@ -11,6 +11,7 @@ interface Post {
     slug: string;
     date: string;
     title: string;
+    topics: string[];
     description: string;
 }
 
@@ -30,6 +31,7 @@ async function getAllPosts(): Promise<Post[]> {
             slug,
             date: data.date,
             title: data.title,
+            topics: data.topics,
             description: data.description,
         };
     });
@@ -56,6 +58,7 @@ export default async function BlogPage() {
                                 <PostItem
                                     slug={post.slug}
                                     title={post.title}
+                                    topics={post.topics}
                                     description={post.description}
                                     date={post.date}
                                 />
