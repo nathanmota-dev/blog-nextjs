@@ -21,12 +21,12 @@ async function getAllPosts(): Promise<Post[]> {
     const posts: Post[] = filenames.map((filename) => {
         const filePath = path.join(postsDirectory, filename);
         const fileContents = fs.readFileSync(filePath, 'utf8');
-        const { data } = matter(fileContents); // Extrai os dados do frontmatter (como título e data)
+        const { data } = matter(fileContents); 
         const slug = filename.replace('.mdx', '');
 
         return {
             slug,
-            date: data.date, // Mantém a data no formato original (ISO ou UTC)
+            date: data.date,
             title: data.title,
             topics: data.topics,
             description: data.description,
@@ -56,7 +56,7 @@ export default async function LatestPosts() {
                                     title={post.title}
                                     topics={post.topics}
                                     description={post.description}
-                                    // Aqui você pode formatar a data na renderização
+                                    
                                     date={new Date(post.date).toLocaleDateString('pt-BR', {
                                         day: '2-digit',
                                         month: 'long',

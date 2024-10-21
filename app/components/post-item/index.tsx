@@ -37,7 +37,7 @@ export default function PostItem({ slug, title, topics, description, date }: Pos
                         <time dateTime={date}>{date}</time>
                     </dd>
                 </dl>
-                <Link href={slug}>
+                <Link href={`/posts/${slug}`}>
                     <Button variant="link">Saiba mais <FaArrowRight className="w-2 h-2" /> </Button>
                 </Link>
             </div>

@@ -1,24 +1,82 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { MDXRemote } from 'next-mdx-remote/rsc';
-import Navbar from "../../components/navbar";
+import { MDXRemoteSerializeResult } from 'next-mdx-remote/rsc';
+import { serialize } from 'next-mdx-remote/serialize';
+import Navbar from '../../components/navbar';
 import { notFound } from 'next/navigation';
 
-// Diretório onde os arquivos MDX estão armazenados
-const contentDirectory = path.join(process.cwd(), 'content/posts');
+const postsDirectory = path.join(process.cwd(), 'content/posts');
 
-// Função para carregar o conteúdo do MDX baseado no slug
-async function getPostBySlug(slug: string) {
-    const fullPath = path.join(contentDirectory, `${slug}.mdx`);
+interface Post {
+    slug: string;
+    title: string;
+    topics?: string[];
+    description: string;
+    body: MDXRemoteSerializeResult;
+}
+
+// Carregar o conteúdo do post com base no slug
+async function getPostFromSlug(slug: string): Promise<Post | null> {
+    const fullPath = path.join(postsDirectory, `${slug}.mdx`);
+
+    if (!fs.existsSync(fullPath)) {
+        return null;
+    }
+
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data, content } = matter(fileContents);
 
-    return { slug, data, content };
+    return {
+        slug,
+        title: data.title,
+        topics: data.topics,
+        description: data.description,
+        body: await serialize(content),
+    };
+}
+
+// Gerar os metadados 
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+    const post = await getPostFromSlug(params.slug);
+    if (!post) return {};
+
+    return {
+        title: post.title,
+        description: post.description,
+        openGraph: {
+            title: post.title,
+            description: post.description,
+            url: `http://localhost:3000/posts/${params.slug}`,
+            images: [
+                {
+                    url: `http://localhost:3000/images/social-image.jpg`,
+                    width: 800,
+                    height: 600,
+                    alt: post.title,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: post.title,
+            description: post.description,
+            images: [`http://localhost:3000/images/social-image.jpg`],
+        },
+        metadataBase: new URL('http://localhost:3000'),
+    };
+}
+
+// Gerar as rotas estáticas
+export async function generateStaticParams() {
+    const filenames = fs.readdirSync(postsDirectory);
+    return filenames.map((filename) => ({
+        slug: filename.replace('.mdx', ''),
+    }));
 }
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
-    const post = await getPostBySlug(params.slug);
+    const post = await getPostFromSlug(params.slug);
 
     if (!post) {
         return notFound();
@@ -26,15 +84,21 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
     return (
         <div>
-            <div><Navbar /></div>
-            <div className="container max-w-4xl py-6 lg:py-10">
-                <article>
-                    <h1 className="text-4xl lg:text-5xl font-black text-black dark:text-white">{post.data.title}</h1>
-                    <p className="text-muted-foreground">{post.data.date}</p>
-                    <hr className="mt-8 dark:border-slate-700 border-gray-400" />                   
-                    <MDXRemote source={post.content} />
-                </article>
-            </div>
+            <Navbar />
+            <article className="container py-6 prose dark:prose-invert max-w-3xl mx-auto">
+                <h1 className="mb-2 text-4xl font-bold">{post.title}</h1>
+                <div className="flex gap-2 mb-2">
+                    {post.topics?.map((topic: string) => (
+                        <span key={topic} className="inline-block px-2 py-0.5 text-xs font-semibold text-black dark:text-white bg-slate-200 dark:bg-slate-800 rounded-md">
+                            {topic}
+                        </span>
+                    ))}
+                </div>
+                {post.description ? (
+                    <p className="text-xl mt-0 text-muted-foreground">{post.description}</p>
+                ) : null}
+                <hr className="my-4" />
+            </article>
         </div>
     );
 }
