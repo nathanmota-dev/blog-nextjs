@@ -1,22 +1,28 @@
 import fs from 'fs';
 import path from 'path';
-import matter from 'gray-matter';
-import { MDXRemoteSerializeResult } from 'next-mdx-remote/rsc';
-import { serialize } from 'next-mdx-remote/serialize';
+import { compileMDX } from 'next-mdx-remote/rsc';
 import Navbar from '../../components/navbar';
 import { notFound } from 'next/navigation';
 
 const postsDirectory = path.join(process.cwd(), 'content/posts');
+
+interface Frontmatter {
+    title: string;
+    topics?: string[];
+    description: string;
+}
+
+import { ReactElement } from 'react';
 
 interface Post {
     slug: string;
     title: string;
     topics?: string[];
     description: string;
-    body: MDXRemoteSerializeResult;
+    content: ReactElement;
 }
 
-// Carregar o conteúdo do post com base no slug
+// Função para carregar o conteúdo do post com base no slug
 async function getPostFromSlug(slug: string): Promise<Post | null> {
     const fullPath = path.join(postsDirectory, `${slug}.mdx`);
 
@@ -25,18 +31,23 @@ async function getPostFromSlug(slug: string): Promise<Post | null> {
     }
 
     const fileContents = fs.readFileSync(fullPath, 'utf8');
-    const { data, content } = matter(fileContents);
+
+    // O compileMDX retorna tanto o frontmatter quanto o conteúdo
+    const { frontmatter, content } = await compileMDX<Frontmatter>({
+        source: fileContents,
+        options: { parseFrontmatter: true },
+    });
 
     return {
         slug,
-        title: data.title,
-        topics: data.topics,
-        description: data.description,
-        body: await serialize(content),
+        title: frontmatter.title,
+        topics: frontmatter.topics,
+        description: frontmatter.description,
+        content,
     };
 }
 
-// Gerar os metadados 
+// Função para gerar os metadados do post
 export async function generateMetadata({ params }: { params: { slug: string } }) {
     const post = await getPostFromSlug(params.slug);
     if (!post) return {};
@@ -75,6 +86,7 @@ export async function generateStaticParams() {
     }));
 }
 
+// Componente da página de Post
 export default async function PostPage({ params }: { params: { slug: string } }) {
     const post = await getPostFromSlug(params.slug);
 
@@ -98,6 +110,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
                     <p className="text-xl mt-0 text-muted-foreground">{post.description}</p>
                 ) : null}
                 <hr className="my-4" />
+                <div className="prose">{post.content}</div>
             </article>
         </div>
     );

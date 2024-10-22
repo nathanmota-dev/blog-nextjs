@@ -1,0 +1,81 @@
+---
+title: "Entendendo o Hook useEffect no React"
+date: "2024-10-26"
+topics: ["react", "hooks", "code"]
+description: "Entendendo o Hook useEffect no React"
+---
+
+# Entendendo o Hook `useEffect` no React
+<br/>
+O hook `useEffect` é uma das funcionalidades mais importantes no React, pois ele permite que você lide com efeitos colaterais em componentes funcionais. Antes do React 16.8, efeitos colaterais como requisições de API ou manipulação direta do DOM só podiam ser feitos dentro de componentes de classe. Agora, com o `useEffect`, podemos realizar essas operações diretamente em componentes funcionais.
+<br/>
+## Sintaxe básica
+<br/>
+A função `useEffect` recebe dois parâmetros: uma função que define o efeito e um array de dependências. Veja o exemplo básico abaixo:
+<br/>
+```jsx
+import React, { useState, useEffect } from 'react';
+
+function Contador() {
+  const [contagem, setContagem] = useState(0);
+
+  // useEffect executa após cada renderização do componente
+  useEffect(() => {
+    document.title = `Você clicou ${contagem} vezes`;
+  }, [contagem]); // O efeito será executado apenas quando 'contagem' mudar
+
+  return (
+    <div>
+      <p>Você clicou {contagem} vezes</p>
+      <button onClick={() => setContagem(contagem + 1)}>Clique aqui</button>
+    </div>
+  );
+}
+
+export default Contador;
+```
+<br/>
+### Explicação do código
+
+No exemplo acima, temos um componente funcional chamado `Contador` que usa o `useState` para controlar o estado da contagem de cliques. O `useEffect` é utilizado para atualizar o título da página sempre que o valor de `contagem` for alterado. O segundo argumento do `useEffect` é um array de dependências, que neste caso contém apenas a variável `contagem`. Isso significa que o efeito será reexecutado somente quando o valor de `contagem` mudar.
+
+## Efeitos sem dependências
+
+Se você quiser que um efeito seja executado apenas uma vez, quando o componente for montado, basta passar um array vazio como dependência:
+<br/>
+```jsx
+useEffect(() => {
+  console.log('Componente montado');
+}, []); // Este efeito será executado apenas uma vez
+```
+<br/>
+Este padrão é útil para realizar operações como buscar dados de uma API quando o componente é exibido pela primeira vez.
+
+## Limpeza de efeitos
+
+Alguns efeitos, como o uso de timers ou listeners de eventos, precisam ser "limpos" quando o componente é desmontado ou quando o efeito for reexecutado. Para isso, o `useEffect` pode retornar uma função de limpeza:
+<br/>
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    console.log('Intervalo ativo!');
+  }, 1000);
+
+  // Limpar o intervalo quando o componente for desmontado
+  return () => clearInterval(timer);
+}, []); // O timer será configurado apenas na montagem do componente
+```
+<br/>
+Essa função de limpeza é útil para evitar problemas de memória e comportamento indesejado em componentes que não estão mais em uso.
+
+## Conclusão
+
+O hook `useEffect` é uma poderosa ferramenta no React para lidar com efeitos colaterais de forma declarativa. Com ele, podemos realizar operações como atualizar o DOM, buscar dados e configurar timers de forma muito mais simples do que com componentes de classe. Entender o uso correto do `useEffect` pode evitar problemas de desempenho e bugs relacionados à renderização de componentes.
+
+Espero que este post tenha ajudado você a entender melhor o `useEffect`!
+<br/>
+---
+<br/>
+**Autor:** Nathan Mota  
+**Tags:** React, Hooks, JavaScript
+<br/><br/>
