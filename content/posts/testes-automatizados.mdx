@@ -1,0 +1,105 @@
+---
+title: "Testes Automatizados: O que são e como escrever"
+date: "2024-10-21"
+topics: ["testes", "automatização", "code"]
+description: "Entendendo a importância e como escrever testes automatizados"
+---
+
+# Testes Automatizados
+
+## O que são testes automatizados?
+
+Testes são uma forma de garantirmos o funcionamento correto do código. Basicamente, verificamos se o ciclo de execução do código está correto e se ele retorna o que esperamos. 
+
+Como são automatizados, podemos testar vários cenários com apenas um comando. Por exemplo, em uma aplicação grande com várias funcionalidades, podemos testar 200 cenários diferentes com um único comando, facilitando a verificação da aplicação.
+
+## Por que escrever testes?
+
+Testes são indispensáveis para aplicações escaláveis porque:
+
+- Garantem que o código está funcionando em vários cenários.
+- Facilitam a manutenção do código, permitindo refatorações com mais segurança. Se uma mudança quebrar algo, o teste avisa imediatamente.
+- Economizam tempo e dinheiro, prevenindo que a aplicação quebre em produção.
+
+## Tipos de testes
+
+Os testes podem ser divididos em três tipos principais:
+
+- **Testes Unitários**
+- **Testes de Integração**
+- **Testes E2E**
+
+## Como escrevemos testes?
+
+Para escrever testes, precisamos de uma biblioteca de testes. Usaremos o Jest e o React Testing Library. O Jest testa código JavaScript, e o React Testing Library é uma extensão que permite testar componentes React. Outra ferramenta comum para testes E2E é o Cypress.
+
+### Testes Unitários
+
+Testes unitários focam em testar uma única unidade de código sem chamar agentes externos, como APIs ou bancos de dados. Um exemplo básico usando Jest:
+
+```jsx
+// Exemplo de um teste unitário com Jest
+function sum(a, b) {
+  return a + b;
+}
+
+test('deve retornar a soma de dois números', () => {
+  expect(sum(1, 2)).toBe(3);
+});
+```
+
+Neste exemplo, o Jest verifica se a função `sum` retorna 3 ao passar 1 e 2 como parâmetros. O método `toBe` é utilizado para verificar o valor exato, mas o Jest também oferece outros métodos, como verificar se o retorno é `null`, `undefined`, ou se é maior ou menor que outro valor.
+
+### Testes de Integração
+
+Testes de integração verificam a interação entre duas ou mais unidades de código. Por exemplo, quando um componente depende de outro. Nesses testes, APIs e outros serviços externos são simulados (mockados).
+
+### Testes E2E
+
+Testes End-to-End simulam o comportamento do usuário na aplicação. Esses testes cobrem o fluxo completo, sem mocks, verificando a aplicação como um todo. Eles são mais demorados e robustos, pois interagem com APIs e bancos de dados. Uma ferramenta popular para testes E2E é o Cypress.
+
+## Aplicação prática
+
+Para testar elementos na tela usando React Testing Library, por exemplo, usamos o comando:
+
+```jsx
+screen.getByText("Hello world!");
+```
+
+Se houver um erro de formatação (como um espaço a mais), o teste falha. Para resolver isso, usamos expressões regulares:
+
+```jsx
+screen.getByText(/change message/i);
+```
+
+Aqui estão alguns comandos úteis:
+
+- `render`: renderiza o componente.
+- `screen`: objeto que permite buscar elementos na tela, como `getByText` ou `getByRole`.
+- `fireEvent`: dispara eventos como cliques.
+
+Também podemos testar estilos:
+
+```jsx
+const button = screen.getByRole("button", { name: "Click me" });
+expect(button).toHaveStyle({ backgroundColor: "red" });
+```
+
+Embora geralmente não testemos estilos, pode ser útil em casos específicos, como verificar se um botão está vermelho quando desativado e verde quando ativado.
+
+## Diferença entre `getByText` e `queryByText`
+
+A principal diferença entre os dois métodos é que `getByText` lança um erro se o texto não for encontrado, enquanto `queryByText` retorna `null` se o texto não estiver presente. Por exemplo:
+
+```jsx
+const oldMessage = screen.queryByText("Let's learn more about testing in React");
+expect(oldMessage).toBeNull();
+```
+
+Também podemos usar `.not.toBeInTheDocument()` para verificar se um elemento não está na tela.
+<br/>
+---
+<br/>
+**Autor:** Nathan Mota  
+**Tags:** Testes, Automação, React
+<br/><br/>

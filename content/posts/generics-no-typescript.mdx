@@ -1,0 +1,65 @@
+---
+title: "TypeScript: Generics Avançados e Tipos Condicionais"
+date: "2024-10-22"
+topics: ["typescript", "generics", "tipos"]
+description: "Aprenda sobre generics avançados e tipos condicionais em TypeScript, melhorando a segurança e flexibilidade do seu código."
+---
+
+# TypeScript: Generics Avançados e Tipos Condicionais
+
+TypeScript é uma linguagem poderosa que traz tipagem estática ao JavaScript, permitindo aos desenvolvedores escrever código mais seguro e escalável. Entre os recursos mais importantes do TypeScript, estão os **generics** e os **tipos condicionais**. Neste post, exploraremos como utilizar esses conceitos para melhorar a qualidade do seu código.
+
+## O que são Generics?
+
+Generics permitem que você escreva funções e classes que funcionem com diferentes tipos sem perder a segurança de tipo. Isso é especialmente útil quando você não sabe previamente qual tipo será usado.
+
+### Exemplo de Generics
+
+Vamos considerar uma função simples que retorna o primeiro elemento de um array:
+
+```typescript
+function primeiroElemento<T>(array: T[]): T | undefined {
+    return array[0];
+}
+
+const numero = primeiroElemento([1, 2, 3]); // tipo: number
+const texto = primeiroElemento(['a', 'b', 'c']); // tipo: string
+```
+
+## Tipos Condicionais
+
+Os tipos condicionais em TypeScript permitem que você defina tipos com base em uma condição. A sintaxe básica é `A extends B ? C : D`, onde se `A` é um subtipo de `B`, o tipo resultante será `C`; caso contrário, será `D`.
+
+### Exemplo de Tipos Condicionais
+
+Vamos criar um tipo que retorna `true` se o tipo for um array e `false` caso contrário:
+
+```typescript
+type IsArray<T> = T extends any[] ? true : false;
+
+type Test1 = IsArray<number[]>; // tipo: true
+type Test2 = IsArray<number>; // tipo: false
+```
+
+## Combinando Generics e Tipos Condicionais
+
+Você pode combinar generics e tipos condicionais para criar funções mais dinâmicas. Veja o exemplo abaixo, onde criamos uma função que aceita um array e retorna o tipo do primeiro elemento:
+
+```typescript
+function tipoDoPrimeiroElemento<T>(array: T[]): T extends (infer U)[] ? U : never {
+    return array[0] as any;
+}
+
+const tipo1 = tipoDoPrimeiroElemento([1, 2, 3]); // tipo: number
+const tipo2 = tipoDoPrimeiroElemento(['a', 'b', 'c']); // tipo: string
+```
+
+## Conclusão
+
+Generics avançados e tipos condicionais em TypeScript são ferramentas poderosas que permitem escrever código mais flexível e seguro. Ao dominar esses conceitos, você pode melhorar significativamente a qualidade e a manutenibilidade do seu código.
+<br/>
+---
+<br/>
+**Autor:** Nathan Mota  
+**Tags:** TypeScript, Generics, Tipos
+<br/><br/>

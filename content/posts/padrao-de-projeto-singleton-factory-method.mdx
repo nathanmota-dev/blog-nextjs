@@ -1,0 +1,130 @@
+---
+title: "Padrão de Projeto Factory Method"
+date: "2024-10-19"
+topics: ["design patterns", "factory method", "padrões de projeto"]
+description: "Explore o padrão de projeto Factory Method e como ele pode ser usado para criar objetos de forma flexível e escalável."
+---
+
+# Padrão de Projeto Factory Method
+
+O **Padrão de Projeto Factory Method** é um padrão de criação que permite que subclasses decidam qual classe instanciar. Em vez de criar objetos diretamente, você usa uma interface ou uma classe abstrata que define o método de criação, permitindo que as subclasses implementem esse método de forma específica. Isso promove a flexibilidade e a escalabilidade do seu código.
+
+## Características do Factory Method
+
+- **Criação de Objetos**: O Factory Method delega a responsabilidade de instanciar objetos a subclasses.
+- **Flexibilidade**: Você pode adicionar novas classes sem alterar o código existente.
+- **Desacoplamento**: Ajuda a desacoplar o código cliente do código de criação de objetos.
+
+## Como Implementar o Padrão Factory Method
+
+### Exemplo em JavaScript
+
+Aqui está um exemplo simples de como implementar o padrão Factory Method em JavaScript:
+
+```javascript
+// Produto base
+class Product {
+    constructor(name) {
+        this.name = name;
+    }
+}
+
+// Criadores
+class Creator {
+    createProduct(name) {
+        throw new Error('Este método deve ser implementado!');
+    }
+}
+
+class ConcreteCreatorA extends Creator {
+    createProduct(name) {
+        return new Product(name);
+    }
+}
+
+class ConcreteCreatorB extends Creator {
+    createProduct(name) {
+        return new Product(`Produto B: ${name}`);
+    }
+}
+
+// Testando o Factory Method
+const creatorA = new ConcreteCreatorA();
+const productA = creatorA.createProduct('Produto A');
+console.log(productA.name); // Saída: Produto A
+
+const creatorB = new ConcreteCreatorB();
+const productB = creatorB.createProduct('Produto B');
+console.log(productB.name); // Saída: Produto B: Produto B
+```
+
+### Exemplo em Java
+
+Aqui está uma implementação do padrão Factory Method em Java:
+
+```java
+// Produto base
+public interface Product {
+    void doSomething();
+}
+
+// Implementações de Produto
+public class ConcreteProductA implements Product {
+    public void doSomething() {
+        System.out.println("Fazendo algo no Produto A");
+    }
+}
+
+public class ConcreteProductB implements Product {
+    public void doSomething() {
+        System.out.println("Fazendo algo no Produto B");
+    }
+}
+
+// Criador
+public abstract class Creator {
+    public abstract Product factoryMethod();
+}
+
+// Criadores concretos
+public class ConcreteCreatorA extends Creator {
+    public Product factoryMethod() {
+        return new ConcreteProductA();
+    }
+}
+
+public class ConcreteCreatorB extends Creator {
+    public Product factoryMethod() {
+        return new ConcreteProductB();
+    }
+}
+
+// Testando o Factory Method
+public class Main {
+    public static void main(String[] args) {
+        Creator creatorA = new ConcreteCreatorA();
+        Product productA = creatorA.factoryMethod();
+        productA.doSomething(); // Saída: Fazendo algo no Produto A
+
+        Creator creatorB = new ConcreteCreatorB();
+        Product productB = creatorB.factoryMethod();
+        productB.doSomething(); // Saída: Fazendo algo no Produto B
+    }
+}
+```
+
+## Quando Usar o Padrão Factory Method
+
+- Quando você não sabe com antecedência quais classes serão instanciadas.
+- Quando você deseja proporcionar uma interface comum para a criação de objetos.
+- Quando suas subclasses precisam ter a liberdade de criar objetos que podem variar em tempo de execução.
+
+## Considerações Finais
+
+O padrão Factory Method é uma abordagem poderosa para criar objetos de forma flexível e escalável. Ele permite que você altere a implementação dos produtos sem afetar o código cliente, promovendo um design mais limpo e sustentável.
+<br/>
+---
+<br/>
+**Autor:** Nathan Mota  
+**Tags:** Design Patterns, Factory Method, Padrões de Projeto
+<br/><br/>

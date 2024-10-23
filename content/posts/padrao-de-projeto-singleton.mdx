@@ -1,0 +1,98 @@
+---
+title: "Padrão de Projeto Singleton"
+date: "2024-10-18"
+topics: ["design patterns", "singleton", "padrões de projeto"]
+description: "Entenda o padrão de projeto Singleton, suas características e como implementá-lo em suas aplicações."
+---
+
+# Padrão de Projeto Singleton
+
+O **Padrão de Projeto Singleton** é um dos padrões de design mais conhecidos e utilizados. Ele garante que uma classe tenha apenas uma única instância e fornece um ponto de acesso global a essa instância. Isso é útil quando um único objeto é necessário para coordenar ações em todo o sistema.
+
+## Características do Singleton
+
+- **Instância Única**: O Singleton garante que apenas uma instância da classe seja criada.
+- **Acesso Global**: A instância do Singleton pode ser acessada globalmente, o que facilita o gerenciamento de recursos compartilhados.
+- **Controle de Instanciação**: O padrão fornece um método de controle para criar a instância, evitando que novos objetos sejam criados.
+
+## Como Implementar o Padrão Singleton
+
+### Exemplo em JavaScript
+
+Aqui está um exemplo simples de como implementar o padrão Singleton em JavaScript:
+
+```javascript
+class Singleton {
+    constructor() {
+        if (Singleton.instance) {
+            return Singleton.instance;
+        }
+        this.data = {};
+        Singleton.instance = this;
+    }
+
+    setData(key, value) {
+        this.data[key] = value;
+    }
+
+    getData(key) {
+        return this.data[key];
+    }
+}
+
+// Testando o Singleton
+const instance1 = new Singleton();
+instance1.setData('name', 'João');
+
+const instance2 = new Singleton();
+console.log(instance2.getData('name')); // Saída: João
+```
+
+### Exemplo em Java
+
+Aqui está uma implementação do padrão Singleton em Java:
+
+```java
+public class Singleton {
+    private static Singleton instance;
+
+    private Singleton() {
+        // Construtor privado para evitar instanciação externa
+    }
+
+    public static Singleton getInstance() {
+        if (instance == null) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+
+    public void someBusinessLogic() {
+        // Lógica de negócio
+    }
+}
+
+// Testando o Singleton
+public class Main {
+    public static void main(String[] args) {
+        Singleton singleton = Singleton.getInstance();
+        singleton.someBusinessLogic();
+    }
+}
+```
+
+## Quando Usar o Padrão Singleton
+
+- Quando você precisa garantir que apenas uma instância de uma classe exista.
+- Quando você deseja um ponto de acesso global para essa instância.
+- Quando você está gerenciando recursos compartilhados, como conexões de banco de dados ou configurações de aplicativo.
+
+## Considerações Finais
+
+O padrão Singleton é uma ferramenta poderosa, mas deve ser usado com cautela. O uso excessivo de Singletons pode levar a um código acoplado e difícil de testar. É importante considerar se o uso de um Singleton é realmente necessário antes de implementá-lo.
+<br/>
+---
+<br/>
+**Autor:** Nathan Mota  
+**Tags:** Design Patterns, Singleton, Padrões de Projeto
+<br/><br/>

@@ -1,0 +1,135 @@
+---
+title: "Padrão de Projeto Observer"
+date: "2024-10-20"
+topics: ["design patterns", "observer", "padrões de projeto"]
+description: "Explore o padrão de projeto Observer, que permite que objetos notifiquem outros sobre mudanças em seu estado, promovendo um sistema desacoplado."
+---
+
+# Padrão de Projeto Observer
+
+O **Padrão de Projeto Observer** é um padrão comportamental que define uma dependência um-para-muitos entre objetos, de modo que quando um objeto muda de estado, todos os seus dependentes são notificados e atualizados automaticamente. Esse padrão é amplamente utilizado em sistemas de eventos, como interfaces gráficas e sistemas de notificação.
+
+## Características do Observer
+
+- **Desacoplamento**: Permite que os objetos se comuniquem sem conhecer a implementação uns dos outros.
+- **Notificações Automáticas**: Os observadores são notificados automaticamente quando o estado do sujeito muda.
+- **Flexibilidade**: Facilita a adição ou remoção de observadores sem afetar o sujeito.
+
+## Como Implementar o Padrão Observer
+
+### Exemplo em JavaScript
+
+Aqui está um exemplo simples do padrão Observer em JavaScript:
+
+```javascript
+class Subject {
+    constructor() {
+        this.observers = [];
+    }
+
+    addObserver(observer) {
+        this.observers.push(observer);
+    }
+
+    removeObserver(observer) {
+        this.observers = this.observers.filter(obs => obs !== observer);
+    }
+
+    notifyObservers(data) {
+        this.observers.forEach(observer => observer.update(data));
+    }
+
+    // Método que muda o estado e notifica os observadores
+    changeState(data) {
+        this.notifyObservers(data);
+    }
+}
+
+class Observer {
+    update(data) {
+        console.log(`Observador recebeu a atualização: ${data}`);
+    }
+}
+
+// Testando o Observer
+const subject = new Subject();
+const observer1 = new Observer();
+const observer2 = new Observer();
+
+subject.addObserver(observer1);
+subject.addObserver(observer2);
+
+subject.changeState("Novo estado"); // Notifica os observadores
+```
+
+### Exemplo em Java
+
+Aqui está uma implementação do padrão Observer em Java:
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+interface Observer {
+    void update(String data);
+}
+
+class Subject {
+    private List<Observer> observers = new ArrayList<>();
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyObservers(String data) {
+        for (Observer observer : observers) {
+            observer.update(data);
+        }
+    }
+
+    public void changeState(String data) {
+        notifyObservers(data);
+    }
+}
+
+class ConcreteObserver implements Observer {
+    @Override
+    public void update(String data) {
+        System.out.println("Observador recebeu a atualização: " + data);
+    }
+}
+
+// Testando o Observer
+public class Main {
+    public static void main(String[] args) {
+        Subject subject = new Subject();
+        Observer observer1 = new ConcreteObserver();
+        Observer observer2 = new ConcreteObserver();
+
+        subject.addObserver(observer1);
+        subject.addObserver(observer2);
+
+        subject.changeState("Novo estado"); // Notifica os observadores
+    }
+}
+```
+
+## Quando Usar o Padrão Observer
+
+- Quando você precisa de um sistema de eventos onde mudanças em um objeto devem ser refletidas em outros objetos.
+- Quando deseja manter os objetos desacoplados, permitindo que sejam desenvolvidos e testados separadamente.
+- Em aplicações com múltiplos componentes que precisam reagir a alterações de estado.
+
+## Considerações Finais
+
+O padrão Observer é uma solução poderosa para sistemas que precisam de comunicação em tempo real e reatividade a mudanças de estado. No entanto, deve ser usado com cuidado para evitar problemas de desempenho e complexidade em sistemas muito grandes.
+<br/>
+---
+<br/>
+**Autor:** Nathan Mota  
+**Tags:** Design Patterns, Observer, Padrões de Projeto
+<br/><br/>

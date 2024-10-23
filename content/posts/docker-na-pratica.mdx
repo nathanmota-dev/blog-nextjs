@@ -1,0 +1,73 @@
+---
+title: "Docker: O que é e como funciona"
+date: "2024-10-25"
+topics: ["docker", "containers", "virtualização"]
+description: "Entenda o que é Docker, como ele funciona e como pode facilitar o desenvolvimento e a escalabilidade de aplicações."
+---
+
+# Docker
+
+### O que é o Docker?
+
+Imagine a seguinte situação: você desenvolve uma aplicação fullstack utilizando a versão 18 do Node.js, mas o servidor onde a aplicação será implantada suporta apenas a versão 14. Como resolver esse problema? É aí que entra o Docker.
+
+O Docker permite criar sua aplicação e empacotá-la em um *container*, que pode ser entendido como uma espécie de máquina virtual leve. Nesse container, você define a versão do Node.js (ou qualquer outra tecnologia) que a aplicação precisa para rodar. Dessa forma, a aplicação pode ser executada em qualquer ambiente, independente da configuração do servidor, já que o container inclui todas as especificações de ambiente necessárias, como a versão do Node.js, React, PostgreSQL, etc.
+
+O *container* é uma maneira de empacotar a aplicação com todas as suas dependências em um único pacote. Assim, a aplicação pode ser executada em qualquer lugar que tenha o Docker instalado, tornando a execução mais flexível e consistente.
+
+### Então o container do Docker é a mesma coisa que uma máquina virtual?
+
+Não. Embora os containers e as máquinas virtuais tenham algumas semelhanças, como o isolamento da aplicação, eles funcionam de maneira diferente. Enquanto uma máquina virtual simula um hardware físico completo, incluindo o sistema operacional, o container compartilha o kernel do sistema operacional com o sistema hospedeiro, o que o torna muito mais leve.
+
+Quando você instala uma máquina virtual, ela precisa de todo o sistema operacional, o que aumenta seu consumo de recursos. Já o Docker é mais leve porque o container contém apenas o que sua aplicação precisa, como as versões do Node.js, React, etc., enquanto compartilha o kernel do sistema do hospedeiro. Portanto, na máquina que rodará o container, você não precisa se preocupar com as versões do Node.js ou outras dependências da aplicação, pois tudo isso já está dentro do container.
+
+### Como funciona a alocação de recursos no Docker?
+
+A alocação de memória no Docker é feita de forma dinâmica. Isso significa que o Docker aloca a quantidade de memória necessária para a aplicação conforme ela precisa. Se a aplicação precisa de mais memória, o Docker aloca mais; se ela precisa de menos, a memória é liberada. Isso contribui para uma melhor gestão de recursos e eficiência no uso de memória.
+
+### Eu aloco a minha aplicação inteira então em um container?
+
+Não necessariamente. Com o Docker, é possível dividir a aplicação em múltiplos containers. Por exemplo, você pode separar o front-end, o back-end e o banco de dados em containers diferentes. Isso torna sua aplicação mais escalável e fácil de manter. Se você precisa atualizar algo no front-end, basta parar o container do front-end, realizar as alterações e reiniciar apenas esse container, sem precisar mexer no back-end ou no banco de dados.
+
+### Vantagens de usar o Docker
+
+- **Consistência entre ambientes**: O Docker garante que a aplicação vai funcionar da mesma forma em qualquer lugar, pois o ambiente de execução é o mesmo, independentemente da máquina física.
+- **Isolamento**: Cada container é isolado do sistema e de outros containers, o que evita problemas de conflitos de dependências entre aplicações diferentes.
+- **Facilidade no desenvolvimento e deploy**: Com Docker, você pode configurar todo o ambiente de desenvolvimento e produção com um simples arquivo de configuração, o *Dockerfile*, e replicar esse ambiente em qualquer máquina.
+
+### Como funciona o *Dockerfile*?
+
+O *Dockerfile* é o arquivo onde você descreve como o Docker deve construir o container para sua aplicação. Nele, você pode definir qual imagem base usar (por exemplo, a versão do Node.js), quais dependências instalar, quais portas expor, entre outras configurações. Um exemplo básico de *Dockerfile* para uma aplicação Node.js seria:
+
+```dockerfile
+# Usar a imagem base do Node.js versão 18
+FROM node:18
+
+# Definir o diretório de trabalho
+WORKDIR /app
+
+# Copiar o package.json e instalar dependências
+COPY package*.json ./
+RUN npm install
+
+# Copiar o restante da aplicação
+COPY . .
+
+# Expor a porta 3000
+EXPOSE 3000
+
+# Comando para rodar a aplicação
+CMD ["npm", "start"]
+```
+
+Com esse *Dockerfile*, você garante que a aplicação sempre será construída com a mesma versão do Node.js e todas as dependências corretas.
+
+### Conclusão
+
+O Docker se tornou uma ferramenta essencial no desenvolvimento moderno por proporcionar uma maneira prática de isolar e empacotar aplicações em ambientes consistentes e replicáveis. Isso torna o desenvolvimento, deploy e escalabilidade de aplicações muito mais simples e eficaz.
+<br/>
+---
+<br/>
+**Autor:** Nathan Mota  
+**Tags:** Docker, Containers, Virtualização
+<br/><br/>

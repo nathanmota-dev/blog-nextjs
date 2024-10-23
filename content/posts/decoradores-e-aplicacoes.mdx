@@ -1,0 +1,94 @@
+---
+title: "TypeScript: Decoradores e suas Aplicações"
+date: "2024-10-24"
+topics: ["typescript", "decoradores", "code"]
+description: "Descubra o que são decoradores em TypeScript e como utilizá-los para modificar o comportamento de classes e métodos."
+---
+
+# TypeScript: Decoradores e suas Aplicações
+
+Os **decoradores** são um recurso poderoso do TypeScript que permite adicionar anotações e metaprogramação a classes e seus membros. Eles são uma maneira de modificar o comportamento de classes, métodos, propriedades ou parâmetros de forma declarativa.
+
+## O que são Decoradores?
+
+Um decorador é uma função que pode ser aplicada a uma classe, método, acessador, propriedade ou parâmetro. Decoradores podem ser usados para adicionar funcionalidades extras, registrar informações ou até mesmo alterar o comportamento padrão.
+
+### Exemplo de Decorador de Classe
+
+Aqui está um exemplo simples de um decorador que registra a criação de uma classe:
+
+```typescript
+function logClass(target: Function) {
+    console.log(`Classe criada: ${target.name}`);
+}
+
+@logClass
+class Usuario {
+    constructor(public nome: string) {}
+}
+
+const usuario = new Usuario('João');
+```
+
+## Decoradores de Método
+
+Os decoradores também podem ser aplicados a métodos. Por exemplo, um decorador que mede o tempo de execução de um método:
+
+```typescript
+function logExecutionTime(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+    const originalMethod = descriptor.value;
+
+    descriptor.value = function (...args: any[]) {
+        const start = performance.now();
+        const result = originalMethod.apply(this, args);
+        const end = performance.now();
+        console.log(`Método ${propertyName} executado em ${end - start} ms`);
+        return result;
+    };
+}
+
+class Calculadora {
+    @logExecutionTime
+    somar(a: number, b: number) {
+        return a + b;
+    }
+}
+
+const calc = new Calculadora();
+calc.somar(5, 3);
+```
+
+## Decoradores de Propriedade
+
+Os decoradores também podem ser aplicados a propriedades. Aqui está um exemplo que transforma uma propriedade em um valor somente leitura:
+
+```typescript
+function Readonly(target: any, propertyName: string) {
+    Object.defineProperty(target, propertyName, {
+        writable: false,
+    });
+}
+
+class Produto {
+    @Readonly
+    nome: string;
+
+    constructor(nome: string) {
+        this.nome = nome;
+    }
+}
+
+const produto = new Produto('Produto A');
+produto.nome = 'Produto B'; // Erro: a propriedade é somente leitura
+```
+
+## Conclusão
+
+Os decoradores são uma maneira poderosa de adicionar funcionalidade e modificar o comportamento em TypeScript. Eles oferecem uma forma limpa e declarativa de aplicar lógica em classes e métodos, permitindo que você escreva código mais organizado e legível.
+<br/>
+---
+<br/>
+**Autor:** Nathan Mota  
+**Tags:** TypeScript, Decoradores, Programação
+<br/><br/>
+```
