@@ -3,6 +3,9 @@ import path from 'path';
 import { compileMDX } from 'next-mdx-remote/rsc';
 import Navbar from '../../components/navbar';
 import { notFound } from 'next/navigation';
+import { ReactElement } from 'react';
+import rehypePrism from 'rehype-prism-plus';
+import '../css/prism-material-oceanic.css';
 
 const postsDirectory = path.join(process.cwd(), 'content/posts');
 
@@ -11,8 +14,6 @@ interface Frontmatter {
     topics?: string[];
     description: string;
 }
-
-import { ReactElement } from 'react';
 
 interface Post {
     slug: string;
@@ -35,7 +36,12 @@ async function getPostFromSlug(slug: string): Promise<Post | null> {
     // O compileMDX retorna tanto o frontmatter quanto o conteúdo
     const { frontmatter, content } = await compileMDX<Frontmatter>({
         source: fileContents,
-        options: { parseFrontmatter: true },
+        options: {
+            parseFrontmatter: true,
+            mdxOptions: {
+                rehypePlugins: [rehypePrism],
+            },
+        },
     });
 
     return {
@@ -47,7 +53,6 @@ async function getPostFromSlug(slug: string): Promise<Post | null> {
     };
 }
 
-// Função para gerar os metadados do post
 export async function generateMetadata({ params }: { params: { slug: string } }) {
     const post = await getPostFromSlug(params.slug);
     if (!post) return {};
@@ -86,7 +91,6 @@ export async function generateStaticParams() {
     }));
 }
 
-// Componente da página de Post
 export default async function PostPage({ params }: { params: { slug: string } }) {
     const post = await getPostFromSlug(params.slug);
 
