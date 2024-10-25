@@ -1,13 +1,13 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
-const config = {
+const config: Config = {
   darkMode: ["class"],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
+  ],
   prefix: "",
   theme: {
     container: {
@@ -72,9 +72,46 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      typography: (theme: (path: string) => string) => ({
+        DEFAULT: {
+          css: {
+            color: theme('colors.black'),
+            h1: { color: 'inherit', marginTop: '0.75rem', marginBottom: '0.75rem', fontSize: '2.5rem', lineHeight: '1.3' },
+            h2: { color: 'inherit', marginTop: '0.75rem', marginBottom: '0.75rem', fontSize: '2rem', lineHeight: '1.4' },
+            h3: { color: 'inherit', marginTop: '0.75rem', marginBottom: '0.75rem', fontSize: '1.75rem', lineHeight: '1.4' },
+            h4: { color: 'inherit', marginTop: '0.75rem', marginBottom: '0.75rem', fontSize: '1.5rem', lineHeight: '1.4' },
+            p: { color: 'inherit', marginBottom: '0.25rem', lineHeight: '1.8' },
+            ul: {
+              paddingLeft: '0.25rem',
+              marginBottom: '0.25rem',
+              '> li': { color: 'inherit', marginBottom: '0.25rem' },
+            },
+            strong: { color: 'inherit' },
+            code: { color: 'inherit' },
+          },
+        },
+        dark: {
+          css: {
+            color: theme('colors.white'),
+            h1: { color: 'inherit' },
+            h2: { color: 'inherit' },
+            h3: { color: 'inherit' },
+            h4: { color: 'inherit' },
+            p: { color: 'inherit' },
+            ul: {
+              '> li': { color: 'inherit' },
+            },
+            strong: { color: 'inherit' },
+            code: { color: 'inherit' },
+          },
+        },
+      }),
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+  ],
+};
 
-export default config
+export default config;
