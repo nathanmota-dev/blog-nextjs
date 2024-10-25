@@ -16,7 +16,7 @@ export default function PostItem({ slug, title, topics, description, date }: Pos
         <nav className="flex flex-col border-border border-b py-3 gap-2 dark:border-slate-700 border-gray-400">
             <div>
                 <h2 className="text-2xl font-bold">
-                    <Link href={slug}>{title}</Link >
+                    <Link href={`/posts/${slug}`}>{title}</Link >
                 </h2>
             </div>
             <div className="flex space-x-2">

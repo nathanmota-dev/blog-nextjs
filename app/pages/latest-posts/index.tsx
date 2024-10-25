@@ -21,7 +21,7 @@ async function getAllPosts(): Promise<Post[]> {
     const posts: Post[] = filenames.map((filename) => {
         const filePath = path.join(postsDirectory, filename);
         const fileContents = fs.readFileSync(filePath, 'utf8');
-        const { data } = matter(fileContents); 
+        const { data } = matter(fileContents);
         const slug = filename.replace('.mdx', '');
 
         return {
@@ -45,7 +45,7 @@ export default async function LatestPosts() {
 
     return (
         <div className="w-full bg-white dark:bg-slate-950 pt-6 justify-center">
-            <h1 className="text-[4rem] font-bold text-black dark:text-white text-center">Posts Recentes</h1>
+            <h1 className="text-[3rem] md:text-[4rem] font-bold text-black dark:text-white text-center">Posts Recentes</h1>
             <div className="container max-w-4xl py-6 lg:py-10">
                 {latestPosts.length > 0 ? (
                     <ul className="flex flex-col">
@@ -56,7 +56,7 @@ export default async function LatestPosts() {
                                     title={post.title}
                                     topics={post.topics}
                                     description={post.description}
-                                    
+
                                     date={new Date(post.date).toLocaleDateString('pt-BR', {
                                         day: '2-digit',
                                         month: 'long',

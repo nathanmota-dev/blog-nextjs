@@ -101,8 +101,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
     return (
         <div>
             <Navbar />
-            <article className="container py-6 prose dark:prose-invert max-w-3xl mx-auto">
-                <h1 className="mb-2 text-4xl font-bold">{post.title}</h1>
+            <article className="container py-6 max-w-3xl mx-auto">
+                <h1 className="mb-2 text-4xl xl:text-[3rem] font-bold text-black dark:text-white pb-2">{post.title}</h1>
                 <div className="flex gap-2 mb-2">
                     {post.topics?.map((topic: string) => (
                         <span key={topic} className="inline-block px-2 py-0.5 text-xs font-semibold text-black dark:text-white bg-slate-200 dark:bg-slate-800 rounded-md">
@@ -113,8 +113,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 {post.description ? (
                     <p className="text-xl mt-0 text-muted-foreground">{post.description}</p>
                 ) : null}
-                <hr className="my-4" />
-                <div className="prose">{post.content}</div>
+                <hr className="mt-8 dark:border-slate-700 border-gray-400 my-4" />
+                <div className="prose text-black dark:text-white">{post.content}</div>
             </article>
         </div>
     );
